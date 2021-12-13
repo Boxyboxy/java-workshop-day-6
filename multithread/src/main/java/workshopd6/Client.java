@@ -1,5 +1,7 @@
 package workshopd6;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -67,8 +69,14 @@ public class Client {
     while (true) {
       String input;
       // need to use reader/scanner when reading from console
+
       BufferedReader br = new BufferedReader(new InputStreamReader(fromConsole));
       input = br.readLine().trim();
+
+      // BufferedInputStream bis = new BufferedInputStream(fromConsole);
+      // DataInputStream dis = new DataInputStream(bis);
+      // input = dis.readUTF();
+      // System.out.println(input);
 
       // processInput is set up in such a way that once it returns false, program
       // exits while loop
@@ -110,7 +118,8 @@ public class Client {
   private void sendToServer(String message) throws IOException {
     // create output stream for the connected socket
     OutputStream os = socket.getOutputStream();
-    DataOutputStream dos = new DataOutputStream(os);
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+    DataOutputStream dos = new DataOutputStream(bos);
     // write message
     dos.writeUTF(message);
     dos.flush();
@@ -119,7 +128,8 @@ public class Client {
   private String receiveFromServer() throws IOException {
     // get input stream from the socket
     InputStream is = socket.getInputStream();
-    DataInputStream dis = new DataInputStream(is);
+    BufferedInputStream bis = new BufferedInputStream(is);
+    DataInputStream dis = new DataInputStream(bis);
     // read the response from server
     String response = dis.readUTF();
     return response;

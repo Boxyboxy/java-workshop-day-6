@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-  // java-cp fortunecookie.jar packageName.Server 12345 cookie_file.txt
+  // java -cp fortunecookie.jar packageName.Server 12345 cookie_file.txt
   // above line runs server class
   // String[] args is equivalent to '12345 cookie_file.txt'
   public static void main(String[] args) throws IOException {
@@ -37,7 +37,9 @@ public class Server {
   private Cookie cookieJar;
   private ServerSocket serverSocket;
   private Socket socket;
-  // ExecutorService is a built-in java API to eneable multi-threaded programming
+  // ExecutorService is a built-in java API to enable multi-threaded programming.
+  // ExecutorService are basically thread runners. No need to call .start() on
+  // threads.
   private ExecutorService threadPool;
 
   // constructor
@@ -69,6 +71,9 @@ public class Server {
       System.out.println("Fella " + count + " connected");
       System.out.println("Relevant information on this socket: " + this.socket);
       System.out.println("Sending fella " + count + " to threadPool");
+      // execute and submit are both methods that could be used to submit a task to
+      // executor framework for asynchronous execution. Submit returns a Future object
+      // while execute method is void.
       threadPool.execute(new CookieClientHandler(this.socket, this.cookieJar));
       count++;
     }
